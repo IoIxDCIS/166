@@ -1,0 +1,54 @@
+html, body {
+    height: 100%;
+    display: block;
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background: linear-gradient(to bottom, #ffff01, #fc9670, #f68dff)
+}
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.vbox, .hbox {
+    height: 100%;
+    flex-wrap: wrap;
+    display: flex;
+}
+.vbox {
+    flex-direction: column;
+    width: 100%;
+}
+.hbox {
+    flex-direction: row;
+}
+
+.header, .footer {
+    width: 100%;
+    text-align: center;
+}
+.header {
+    font-size: 4vw;
+    flex: 1;
+}
+.content, .content .vbox {
+    flex: 16;
+}
+.footer {
+    flex: 1;
+}
+
+.hbox.a {background-color: #3c1053;}
+.hbox.b {background-color: #890c58;}
+.hbox.c {background-color: #e10098;}
+
+.hbox.d {background-color: #ffa500;}
+.hbox.e {background-color: #ff6e00;}
+
+.hbox.f {background-color: #e93479;}
+.hbox.g {background-color: #94167f;}
+.hbox.h {background-color: #300350;}
+.hbox.i {background-color: #94167f;}
+.hbox.j {background-color: #e93479;}
+
+.hbox.k {background: linear-gradient(to left,#af165e,#ffe72b);}
