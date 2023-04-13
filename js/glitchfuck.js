@@ -27,8 +27,9 @@ $(window).on("load", () => {
         false,false,false
     ];
 
+    let alpha = 255 - (Math.random() * 128);
 
-    animate = () => {
+    function animate() {
         c.width = window.innerWidth;
         c.height = window.innerHeight;
         let ctx1 = new OffscreenCanvas(c.width, c.height).getContext("2d");
@@ -69,7 +70,7 @@ $(window).on("load", () => {
             if(i+1 & 3 != 0) {
                 d3.data[i] = d1.data[i] ^ d2.data[i];
             } else {
-                d3.data[i] = 128;
+                d3.data[i] = alpha;
             }
         })
         ctx.putImageData(d3, 0, 0);
