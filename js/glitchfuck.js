@@ -27,7 +27,8 @@ $(window).on("load", () => {
         false,false,false
     ];
 
-    setInterval(() => {
+
+    animate = () => {
         c.width = window.innerWidth;
         c.height = window.innerHeight;
         let ctx1 = new OffscreenCanvas(c.width, c.height).getContext("2d");
@@ -49,7 +50,7 @@ $(window).on("load", () => {
         
         grd1.addColorStop(0, `rgb(${colors[0]},${colors[1]},${colors[2]})`);
         grd1.addColorStop(1, `rgb(${colors[3]},${colors[4]},${colors[5]})`);
-    
+
         let grd2 = ctx.createLinearGradient(0,0,c.width,c.height*dir[1]);
         
         grd2.addColorStop(0, `rgb(${colors[6]},${colors[7]},${colors[8]})`);
@@ -68,9 +69,11 @@ $(window).on("load", () => {
             if(i+1 & 3 != 0) {
                 d3.data[i] = d1.data[i] ^ d2.data[i];
             } else {
-                d3.data[i] = 255;
+                d3.data[i] = 128;
             }
         })
         ctx.putImageData(d3, 0, 0);
-    },1);
+        requestAnimationFrame(animate);
+    }
+    animate();
 })
