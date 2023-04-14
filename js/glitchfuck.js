@@ -28,18 +28,17 @@ $(window).on("load", () => {
     ];
 
     let alpha = 255 - (Math.random() * 128);
-
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+    let ctx1 = new OffscreenCanvas(c.width, c.height).getContext("2d");
+    ctx1.willReadFrequently = true;
+    let ctx2 = new OffscreenCanvas(c.width, c.height).getContext("2d");
+    ctx2.willReadFrequently = true;
+    
     function animate() {
-        c.width = window.innerWidth;
-        c.height = window.innerHeight;
-        let ctx1 = new OffscreenCanvas(c.width, c.height).getContext("2d");
-        ctx1.willReadFrequently = true;
-        let ctx2 = new OffscreenCanvas(c.width, c.height).getContext("2d");
-        ctx2.willReadFrequently = true;
-        
         colors.forEach((c, i) => {
-            (!reverse[i] && c < 255) ? colors[i]+=5 : reverse[i]=true;
-            (reverse[i] && c > 0) ? colors[i]-=5 : reverse[i]=false;
+            (!reverse[i] && c < 255)    ? colors[i]+=5 : reverse[i]=true;
+            (reverse[i] && c > 0)       ? colors[i]-=5 : reverse[i]=false;
         });
         
         let grd1;
