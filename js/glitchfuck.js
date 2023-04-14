@@ -37,8 +37,8 @@ $(window).on("load", () => {
     
     function animate() {
         colors.forEach((c, i) => {
-            (!reverse[i] && c < 255)    ? colors[i]+=5 : reverse[i]=true;
-            (reverse[i] && c > 0)       ? colors[i]-=5 : reverse[i]=false;
+            (!reverse[i] && c < 255)    ? colors[i]++ : reverse[i]=true;
+            (reverse[i] && c > 0)       ? colors[i]-- : reverse[i]=false;
         });
         
         let grd1;
