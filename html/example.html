@@ -1,0 +1,112 @@
+<style>
+    .box, .box .tag, .box .content {
+        display: block;
+        background: rgba(64,64,0,0.1);
+        border-radius: 15px;
+        padding: 5px;
+        margin: 5px;
+        position: relative;
+    }
+    .box .tag-name {
+        line-height: 100%;
+    }
+    .box ul {
+        list-style-type: none;
+        display: inline-block;
+        padding-left: 10px;
+    }
+    .box li {
+        display: inline-block;
+        background: rgba(0,64,64,0.1);
+        padding: 3px;
+        margin: 3px;
+    }
+
+</style>
+<script>
+    function treeExpand(tags) {
+        let vis = document.createElement("span");
+        vis.classList.add("box");
+        for (tag in tags) {
+            let t = tags[tag];
+            if(t.tagName === undefined) {
+                continue;
+            }
+            let tagRep = document.createElement("span");
+            tagRep.classList.add("tag");
+            let tagName = document.createElement("b");
+            tagName.classList.add("tag-name");
+            tagName.innerHTML = t.tagName;
+            tagRep.appendChild(tagName);
+            let attrs = document.createElement("ul");
+            for (i in t.attributes) {
+                let attribute = t.attributes[i];
+
+                if((typeof(attribute)).toString() != "object") {
+                    continue;
+                }
+                if (attribute.value.includes("___")) {
+                    continue;
+                }
+
+                let attr = document.createElement("li");
+
+                let namestr = attribute.name
+                    .replace("style","css rules")
+                    ;
+                if(attribute.name == "style") {
+                    namestr += " are "
+                } else {
+                    namestr += " is "
+                }
+                if(namestr != "") {
+                    let name = document.createElement("span");
+                    name.classList.add("name");
+                    name.innerHTML = namestr;
+                    attr.appendChild(name);
+                }
+                if(attribute.value != "") {
+                    let value = document.createElement("value");
+                    value.classList.add("value");
+                    value.innerHTML = attribute.value;
+                    attr.appendChild(value);
+                }
+                
+                
+                attrs.appendChild(attr);
+                //console.log(attribute);
+            }
+            tagRep.appendChild(attrs);
+            let text = t.innerText.replace(/<(.*?)>/g, "");
+            if(text != "") {
+                let content = document.createElement("span");
+                content.classList.add("content");
+                content.innerHTML = text;
+                tagRep.appendChild(content);
+            }
+
+            let node = treeExpand(t.childNodes);
+            if(node) {
+                tagRep.appendChild(node);
+            }
+            
+            vis.append(tagRep);
+        }
+        if(vis.innerHTML == "") {
+            return null;
+        }
+        return vis;
+    }
+
+    async function ok() {
+        let el = document.createElement("html");
+        await fetch("./index.html").then(r => r.text()).then(r => {
+            el.innerHTML = r;
+        })
+
+        let tags = el.childNodes;
+        document.body.appendChild(treeExpand(tags));
+    };
+    ok();
+
+</script>
