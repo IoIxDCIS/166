@@ -27,23 +27,32 @@ const clearColor = { r: 0.0, g: 0.5, b: 1.0, a: 1.0 };
 // Vertex data for triangle
 // Each vertex has 8 values representing position and color: X Y Z W R G B A
 
-const vertices = new Float32Array([
-    -1.0,    1.0, 0, 1,     1, 0, 0, 1,
-    -1.0,   -1.0, 0, 1,     0, 1, 0, 1,
-     0.0,    1.0, 0, 1,     0, 0, 1, 1,
-     
-     0.0,    1.0, 0, 1,     1, 0, 0, 1,
-    -1.0,   -1.0, 0, 1,     0, 1, 0, 1,
-     0.0,   -1.0, 0, 1,     0, 0, 1, 1,
-
-     0.0,    1.0, 0, 1,     1, 0, 0, 1,
-     0.0,   -1.0, 0, 1,     0, 1, 0, 1,
-     1.0,    1.0, 0, 1,     0, 0, 1, 1,
+function gradCreate(r1,g1,b1,r2,g2,b2) {
+    return new Float32Array([
+        -1.0,    1.0, 0, 1,     r1, g1, b1, 1,                      // a
+        -1.0,   -1.0, 0, 1,     r1, g1, b1, 1,                      // a
+         0.0,    1.0, 0, 1,     (r2+r1)/2, (g2+g1)/2, (b2+b1)/2, 1, // b
+         
+         0.0,    1.0, 0, 1,     (r2+r1)/2, (g2+g1)/2, (b2+b1)/2, 1, // b
+        -1.0,   -1.0, 0, 1,     r1, g1, b1, 1,                      // a
+         0.0,   -1.0, 0, 1,     (r2+r1)/2, (g2+g1)/2, (b2+b1)/2, 1, // b
     
-     1.0,    1.0, 0, 1,     0, 0, 1, 1,
-     0.0,   -1.0, 0, 1,     0, 1, 0, 1,
-     1.0,   -1.0, 0, 1,     1, 0, 0, 1,
-]);
+         0.0,    1.0, 0, 1,     (r2+r1)/2, (g2+g1)/2, (b2+b1)/2, 1, // a
+         0.0,   -1.0, 0, 1,     (r2+r1)/2, (g2+g1)/2, (b2+b1)/2, 1, // a
+         1.0,    1.0, 0, 1,     r2, g2, b2, 1,                      // b
+        
+         1.0,    1.0, 0, 1,     r2, g2, b2, 1,                      // b
+         0.0,   -1.0, 0, 1,     (r2+r1)/2, (g2+g1)/2, (b2+b1)/2, 1, // a
+         1.0,   -1.0, 0, 1,     r2, g2, b2, 1,                      // b
+    ]);
+}
+
+function randGradient() {
+    return gradCreate(
+        1.0 * Math.random(), 1.0 * Math.random(), 1.0 * Math.random(),
+        1.0 * Math.random(), 1.0 * Math.random(), 1.0 * Math.random()
+      );
+}
 
 // Vertex and fragment shaders
 
@@ -101,6 +110,7 @@ async function init() {
   });
 
   // 4: Create vertex buffer to contain vertex data
+  const vertices = randGradient();
   const vertexBuffer = device.createBuffer({
     size: vertices.byteLength, // make it big enough to store vertices in
     usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
