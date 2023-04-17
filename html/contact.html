@@ -7,25 +7,38 @@
         <script src="../js/nav.js"></script>
     </head>
     <body style="background: url('../images/contact_bg.png')">
-        <img style="
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            "
-        src="../images/contact.svg">
-        <textarea style="
-            position: absolute;
-            top: 25%;
-            left: 50%;
-            transform: translate(-50%,0);
-            width: 50%;
-            height: 100%;
-            padding: 5%;
-            background: rgba(128,128,128,0.5);
-            border: 10px solid black;
-            outline: none;
-            color:white
-        "></textarea>
+        <center>
+            <img src="../images/contact.svg">
+            <form>
+                <div class="contact-table">
+                    <table>
+                        <tr>
+                            <td align="right">First Name</td>
+                            <td><input type="text" class="input" name="first_name"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">Last Name</td>
+                            <td><input type="text" class="input" name="last_name"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">Date</td>
+                            <td><input type="text" class="input" name="date"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">Cell Phone</td>
+                            <td><input type="text" class="input" name="cell_phone"></td>
+                        </tr>
+                        <tr>
+                            <td align="right">School Name</td>
+                            <td><input type="text" class="input" name="school_name"></td>
+                        </tr>
+                    </table>
+                    <b>Inquiry</b>
+                    <textarea rows="25" class="input" name="information"></textarea>
+                </div>
+
+            </form>
+        </center> 
+
     </body>
 </html>

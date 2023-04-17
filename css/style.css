@@ -85,3 +85,22 @@ nav .inner li a {
 #glitchfuck {
     margin: 0;
 }
+
+.contact-table {
+    width: 50%;
+    display: block;
+    margin: 0 auto;
+}
+
+.input {
+    background: rgba(128,128,128,0.5);
+    border: 3px solid black;
+    margin: 5px;
+    outline: none;
+    color:white
+}
+
+textarea.input {
+    width: 100%;
+    resize: none;
+}
