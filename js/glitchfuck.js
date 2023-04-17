@@ -1,7 +1,164 @@
 /*
     make a javascript script with a variable, 
 */
-$(window).on("load", () => {
+$(window).on("load", async () => {
+    if(!navigator.gpu) {
+        console.warn("could not find GPU, going to software rendering");
+        softwareRender();
+        return;
+    }
+
+    const adapter = await navigator.gpu.requestAdapter();
+    if(!adapter) {
+        console.warn("could not find adapter, going to software rendering");
+        softwareRender();
+        return;
+    }
+
+    const device = adapter.requestDevice();
+
+    webGPURender(device);
+})
+
+function webGPURender(device) {
+    const shaders = `
+struct VertexOut {
+    @builtin(position) position : vec4f,
+    @location(0) color: vec4f,
+}
+
+@vertex
+fn vertex_main(
+            @location(0) position: vec4f,
+            @location(1) color: vec4f) -> VertexOut
+{
+    var output: VertexOut;
+    output.position = position;
+    output.color = color;
+    return output;
+}
+
+@fragment 
+fn fragment_main(fragData: vertexOut) ->
+    @location(0) vec4f 
+{
+    return fragData.color;
+}
+    `;
+
+    // =====
+    // SETUP
+    // ===== 
+
+    const shaderModule = device.createShaderModule({
+        code: shaders,
+    });
+
+    const canvas = document.querySelector("#gpuCanvas");
+    const context = canvas.getContext("webgpu");
+
+    context.configure({
+        device: device,
+        format: navigator.gpu.getPreferredCanvasFormat(),
+        alphaMode: "premultiplied",
+    });
+
+    // =====
+    // SETUP TRIANGLE
+    // =====
+
+    const vertices = new Float32Array([
+        0.0,    0.6,    0,  1,  // XYZW
+        1,      0,      0,  1,  // RGBA
+        -0.5,   -0.6,   0,  1,  // XYZW
+        0,      1,      0,  1,  // RGBA
+        0.5,    -0.6,   0,  1,  // XYZW
+        0,      0,      1,  1,  // RGBA
+    ]);
+
+    const vertexBuffer = device.createBuffer({
+        size: vertices.byteLength, // make it big enough to store vertices in
+  usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
+    });
+
+    device.queue.writeBuffer(vertexBuffer, 0, vertices, 0, vertices.length);
+
+    // =====
+    // SETUP RENDER PIPELINE
+    // =====
+
+    const vertexBuffers = [
+        {
+            attributes: [
+                {
+                    shaderLocation: 0, // position
+                    offset: 0,
+                    format: "float32x4",
+                },
+                {
+                    shaderLocation: 1, // color
+                    offset: 16,
+                    format: "float32x4",
+                }
+            ],
+            arrayStride: 32,
+            stepMode: "vertex",
+        }
+    ]
+
+    const pipelineDescriptor = {
+        vertex: {
+            module: shaderModule,
+            entryPoint: "vertex_main",
+            buffer: vertexBuffers,
+        },
+        fragment: {
+            module: shaderModule,
+            entryPoint: "fragment_main",
+            targets: [
+                {
+                    format: navigator.gpu.getPreferredCanvasFormat
+                }
+            ],
+        },
+        primitive: {
+            topology: "triangle-list",
+        },
+        layout: "auto"
+    }
+    const renderPipeline = device.createRenderPipeline(pipelineDescriptor);
+
+    const commandEncoder = device.createCommandEncoder();
+
+    const clearColor = {
+        r: 0.0,
+        g: 0.5,
+        b: 1.0,
+        a: 1.0,
+    }
+
+    const renderPassDescriptor = {
+        colorAttachments: [
+            {
+                clearValue: clearColor,
+                loadOp: "clear",
+                storeOp: "store",
+                view: context.getCurrentTetxure().createView(),
+            }
+        ]
+    }
+
+    const passEncoder = commandEncoder.beginrenderPass(renderPassDescriptor);
+
+    passEncoder.setPipeline(renderPipeline);
+    passEncoder.setVertexBuffer(0, vertexBuffer);
+    passEncoder.draw(3);
+    
+    passEncoder.end();
+    device.queue.submit([commandEncoder.finish()]);
+}
+
+function softwareRender() {
     let c = document.getElementById("glitchfuck");
     let ctx = c.getContext("2d");
     ctx.willReadFrequently = true;
@@ -76,4 +233,5 @@ $(window).on("load", () => {
         requestAnimationFrame(animate);
     }
     animate();
-})
+
+}
