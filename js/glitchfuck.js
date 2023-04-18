@@ -126,11 +126,22 @@ function webGPURender(device) {
                 format: 'float32x4'
             }, 
             {
-                shaderLocation: 1, // color
-                offset: 16,
+                shaderLocation: 1, // color1
+                offset: Float32Array.BYTES_PER_ELEMENT * 3,
                 format: 'float32x4'
-            }],
-            arrayStride: 32,
+            }, 
+            {
+                shaderLocation: 2, // color2
+                offset: Float32Array.BYTES_PER_ELEMENT * 6,
+                format: 'float32x4'
+            }, 
+            {
+                shaderLocation: 3, // color3
+                offset: Float32Array.BYTES_PER_ELEMENT * 9,
+                format: 'float32x4'
+            }
+        ],
+            arrayStride: 4*13,
             stepMode: 'vertex'
         }];
 
@@ -146,8 +157,6 @@ function webGPURender(device) {
                 module: shaderModule,
                 entryPoint: 'fragment_main',
                 targets: [
-                    { format: format },
-                    { format: format },
                     { format: format }
                 ]
             },
@@ -169,19 +178,7 @@ function webGPURender(device) {
                 loadOp: 'clear',
                 storeOp: 'store',
                 view: ctx0.getCurrentTexture().createView()
-            },
-            {
-                clearValue: clearColor,
-                loadOp: 'clear',
-                storeOp: 'store',
-                view: ctx1.getCurrentTexture().createView()
-            },
-            {
-                clearValue: clearColor,
-                loadOp: 'clear',
-                storeOp: 'store',
-                view: ctx2.getCurrentTexture().createView()
-            },
+            }
         ]
         };
 

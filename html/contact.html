@@ -5,39 +5,20 @@
         <link rel="stylesheet" href="../css/style.css" type="text/css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <script src="../js/nav.js"></script>
+        <script src="../js/contact.js"></script>
     </head>
     <body style="background: url('../images/contact_bg.png')">
         <center>
             <img src="../images/contact.svg">
-            <form>
                 <div class="contact-table">
-                    <table>
-                        <tr>
-                            <td align="right">First Name</td>
-                            <td><input type="text" class="input" name="first_name"></td>
-                        </tr>
-                        <tr>
-                            <td align="right">Last Name</td>
-                            <td><input type="text" class="input" name="last_name"></td>
-                        </tr>
-                        <tr>
-                            <td align="right">Date</td>
-                            <td><input type="text" class="input" name="date"></td>
-                        </tr>
-                        <tr>
-                            <td align="right">Cell Phone</td>
-                            <td><input type="text" class="input" name="cell_phone"></td>
-                        </tr>
-                        <tr>
-                            <td align="right">School Name</td>
-                            <td><input type="text" class="input" name="school_name"></td>
-                        </tr>
-                    </table>
-                    <b>Inquiry</b>
-                    <textarea rows="25" class="input" name="information"></textarea>
+                    <form action="mailto:alphaproject217@gmail.com">
+                        <b>Subject</b><br>
+                        <input type="text" name="subject"><br>
+                        <b>Inquiry</b><br>
+                        <textarea rows="25" name="body"></textarea><br>
+                        <button id="submit" type="submit">Submit</button>
+                    </form>
                 </div>
-
-            </form>
         </center> 
 
     </body>

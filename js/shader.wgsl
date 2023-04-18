@@ -15,11 +15,8 @@ fn vertex_main(@location(0) position: vec4f,
     return output;
 }
 
-@fragment fn fragment_main(
-    color1: VertexOut,
-    color2: VertexOut,
-    color3: VertexOut,
-) -> @location(0) vec4f
+@fragment 
+fn fragment_main(fragColor: VertexOut) -> @location(0) vec4f
 {
-    return color1.color1;
+    return fragColor.color1;
 }
