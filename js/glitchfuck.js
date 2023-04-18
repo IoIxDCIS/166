@@ -86,33 +86,25 @@ function webGPURender(device) {
     init();
 
     async function draw(device, shaderModule, vertices1, vertices2) {
+        const configuration = {
+            device: device,
+            format: navigator.gpu.getPreferredCanvasFormat(),
+            alphaMode: 'premultiplied'
+        };
 
-        // 3: Get reference to the canvas to render on
+        // Visible canvas
         const canvas = document.querySelector('#glitchfuck');
         const ctx0 = canvas.getContext('webgpu');
+        ctx0.configure(configuration);
 
+        // Invisible canvas for some framebuffers
         const c1 = new OffscreenCanvas(canvas.width, canvas.height);
         const ctx1 = c1.getContext("webgpu");
+        ctx1.configure(configuration);
         const c2 = new OffscreenCanvas(canvas.width, canvas.height);
         const ctx2 = c2.getContext("webgpu");
+        ctx2.configure(configuration);
 
-        ctx0.configure({
-            device: device,
-            format: navigator.gpu.getPreferredCanvasFormat(),
-            alphaMode: 'premultiplied'
-        });
-        ctx1.configure({
-            device: device,
-            format: navigator.gpu.getPreferredCanvasFormat(),
-            alphaMode: 'premultiplied'
-        });
-        ctx2.configure({
-            device: device,
-            format: navigator.gpu.getPreferredCanvasFormat(),
-            alphaMode: 'premultiplied'
-        });
-
-        // 4: Create vertex buffer to contain vertex data
         const vertexBuffer1 = device.createBuffer({
             size: vertices1.byteLength, // make it big enough to store vertices in
             usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
@@ -122,11 +114,11 @@ function webGPURender(device) {
             usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
         });
 
-        // Copy the vertex data over to the GPUBuffer using the writeBuffer() utility function
+        // Copy the vertex data over to the gpu buffer
         device.queue.writeBuffer(vertexBuffer1, 0, vertices1, 0, vertices1.length);
         device.queue.writeBuffer(vertexBuffer2, 0, vertices2, 0, vertices2.length);
 
-        // 5: Create a GPUVertexBufferLayout and GPURenderPipelineDescriptor to provide a definition of our render pipline
+        // Create a GPUVertexBufferLayout and GPURenderPipelineDescriptor to provide a definition of our render pipline
         const vertexBuffers = [{
             attributes: [{
                 shaderLocation: 0, // position
@@ -154,9 +146,9 @@ function webGPURender(device) {
                 module: shaderModule,
                 entryPoint: 'fragment_main',
                 targets: [
-                    { format: 'rgba32float' },
-                    { format: 'rgba32float' },
-                    { format: 'rgba32float' }
+                    { format: format },
+                    { format: format },
+                    { format: format }
                 ]
             },
             primitive: {
@@ -165,15 +157,10 @@ function webGPURender(device) {
             layout: 'auto'
         };
 
-        // 6: Create the actual render pipeline
-
         const renderPipeline = device.createRenderPipeline(pipelineDescriptor);
-            
-        // 7: Create GPUCommandEncoder to issue commands to the GPU
-        // Note: render pass descriptor, command encoder, etc. are destroyed after use, fresh one needed for each frame.
         const commandEncoder = device.createCommandEncoder();
 
-        // 8: Create GPURenderPassDescriptor to tell WebGPU which texture to draw into, then initiate render pass
+        // Create GPURenderPassDescriptor to tell WebGPU which texture to draw into, then initiate render pass
 
         const renderPassDescriptor = {
             colorAttachments: [
@@ -198,21 +185,16 @@ function webGPURender(device) {
         ]
         };
 
-        const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
-            
-        // 9: Draw the triangle
 
+        const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
         passEncoder.setPipeline(renderPipeline);
         passEncoder.setVertexBuffer(0, vertexBuffer1);
         passEncoder.setVertexBuffer(0, vertexBuffer2);
         passEncoder.draw(vertices1.length/8);
-
-        // End the render pass
         passEncoder.end();
 
         // 10: End frame by passing array of command buffers to command queue for execution
         device.queue.submit([commandEncoder.finish()]);
-
     }
 }
 
