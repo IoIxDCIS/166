@@ -1,0 +1,82 @@
+{"customers": [
+    {
+        "first_name": "Ethan",
+        "last_name": "Reynolds",
+        "date": "2023-05-01T09:30:00Z",
+        "cell_phone": "(963) 422-5634",
+        "school_name": "Cedar Ridge High School",
+        "zip_code": "12345"
+    },
+    {
+        "first_name": "Olivia",
+        "last_name": "Pierce",
+        "date": "2023-07-15T18:45:00Z",
+        "cell_phone": "(783) 554-9816",
+        "school_name": "Meadowview Middle School",
+        "zip_code": "67890"
+    },
+    {
+        "first_name": "Liam",
+        "last_name": "Baxter",
+        "date": "2023-10-20T15:20:00Z",
+        "cell_phone": "(989) 630-3840",
+        "school_name": "Hillcrest Elementary School",
+        "zip_code": "54321"
+    },
+    {
+        "first_name": "Isabella",
+        "last_name": "Cruz",
+        "date": "2024-01-02T11:10:00Z",
+        "cell_phone": "(814) 295-6950",
+        "school_name": "Willowbrook Academy",
+        "zip_code": "98765"
+    },
+    {
+        "first_name": "Noah",
+        "last_name": "Daniels",
+        "date": "2024-03-11T13:25:00Z",
+        "cell_phone": "(829) 397-0724",
+        "school_name": "Riverdale Middle School",
+        "zip_code": "11111"
+    },
+    {
+        "first_name": "Emma",
+        "last_name": "Larson",
+        "date": "2024-06-05T10:00:00Z",
+        "cell_phone": "(969) 632-2378",
+        "school_name": "Sunnyside Elementary School",
+        "zip_code": "22222"
+    },
+    {
+        "first_name": "Jackson",
+        "last_name": "Patel",
+        "date": "2024-08-19T20:30:00Z",
+        "cell_phone": "(487) 306-6670",
+        "school_name": "Bayview Academy",
+        "zip_code": "33333"
+    },
+    {
+        "first_name": "Ava",
+        "last_name": "Carter",
+        "date": "2024-11-11T14:55:00Z",
+        "cell_phone": "(270) 471-5558",
+        "school_name": "Forest Heights High School",
+        "zip_code": "44444"
+    },
+    {
+        "first_name": "Mason",
+        "last_name": "Lee",
+        "date": "2025-02-14T12:45:00Z",
+        "cell_phone": "(930) 798-5140",
+        "school_name": "Maplewood Middle School",
+        "zip_code": "55555"
+    },
+    {
+        "first_name": "Sophia",
+        "last_name": "Kim",
+        "date": "2025-04-30T16:40:00Z",
+        "cell_phone": "(638) 428-6858",
+        "school_name": "Maplewood Middle School",
+        "zip_code": "66666"
+    }
+]}

@@ -4,14 +4,14 @@
 window.addEventListener("load", async () => {
     if(!navigator.gpu) {
         console.warn("could not find GPU, going to software rendering");
-        //softwareRender();
+        softwareRender();
         return;
     }
 
     const adapter = await navigator.gpu.requestAdapter();
     if(!adapter) {
         console.warn("could not find adapter, going to software rendering");
-        //softwareRender();
+        softwareRender();
         return;
     }
 

@@ -1,12 +1,18 @@
-/*$(window).on("load", () => {
-    $("#submit").on("click", () => {
-        let first_name      = $("#first_name").val();
-        let last_name       = $("#last_name").val();
-        let date            = $("#date").val();
-        let cell_phone      = $("#cell_phone").val();
-        let school_name     = $("#school_name").val();
-        let information     = $("#information").val();
-        window.location.href = `mailto:alphaproject217@gmail.com?subject="Message from ${first_name} ${last_name}"&body="${information}"
-        `
-    })
-});*/
+
+$(window).on("load", () => {
+    const params = new URLSearchParams(window.location.search);
+    const length = Array.from(params.values()).length;
+    if(length <= 4) {
+        return;
+    }
+    let first_name      = params.get("first_name");
+    let last_name       = params.get("last_name");
+    let date            = params.get("date");
+    let cell_phone      = params.get("cell_phone");
+    let school_name     = params.get("school_name");
+    let information     = params.get("information");
+
+    let subject = encodeURIComponent(`Message from ${first_name} ${last_name}`);
+    let body = encodeURIComponent(`Message from ${first_name} ${last_name} on ${date}. Phone Number is ${cell_phone}. Goes to ${school_name}. "${information}"`);
+    window.location.href = `mailto:alphaproject217@gmail.com?subject=${subject}&body="${body}"`
+});
